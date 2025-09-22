@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Resume Builder</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(120deg, #f0f4f8, #d9e2ec);
+      color: #333;
+    }h1 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+form {
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input, textarea, button {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+input:focus, textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.resume-preview {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fefefe;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+  form, .resume-preview {
+    width: 100%;
+  }
+}
+
+.section-title {
+  font-weight: bold;
+  margin-top: 20px;
+  color: #34495e;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Interactive Resume Builder</h1>
+  <form id="resumeForm">
+    <input type="text" id="name" placeholder="Full Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="tel" id="phone" placeholder="Phone Number" required />
+    <input type="text" id="profile" placeholder="Profile Summary" /><div id="educationSection">
+  <input type="text" class="education" placeholder="Education" />
+</div>
+<button type="button" onclick="addEducation()">Add Education</button>
+
+<input type="text" id="skills" placeholder="Skills (comma-separated)" />
+
+<div id="experienceSection">
+  <input type="text" class="experience" placeholder="Experience" />
+</div>
+<button type="button" onclick="addExperience()">Add Experience</button>
+
+<button type="button" onclick="clearForm()">Clear Form</button>
+
+  </form>  <div class="resume-preview" id="resumePreview">
+    <h2 id="previewName"></h2>
+    <p id="previewEmail"></p>
+    <p id="previewPhone"></p>
+    <p id="previewProfile"></p>
+    <div class="section-title">Education</div>
+    <ul id="previewEducation"></ul>
+    <div class="section-title">Skills</div>
+    <p id="previewSkills"></p>
+    <div class="section-title">Experience</div>
+    <ul id="previewExperience"></ul>
+  </div>  <script>
+    const updatePreview = () => {
+      document.getElementById('previewName').textContent = document.getElementById('name').value;
+      document.getElementById('previewEmail').textContent = document.getElementById('email').value;
+      document.getElementById('previewPhone').textContent = document.getElementById('phone').value;
+      document.getElementById('previewProfile').textContent = document.getElementById('profile').value;
+
+      const educations = document.querySelectorAll('.education');
+      document.getElementById('previewEducation').innerHTML = '';
+      educations.forEach(ed => {
+        if (ed.value.trim() !== '') {
+          const li = document.createElement('li');
+          li.textContent = ed.value;
+          document.getElementById('previewEducation').appendChild(li);
+        }
+      });
+
+      const skills = document.getElementById('skills').value;
+      document.getElementById('previewSkills').textContent = skills;
+
+      const experiences = document.querySelectorAll('.experience');
+      document.getElementById('previewExperience').innerHTML = '';
+      experiences.forEach(exp => {
+        if (exp.value.trim() !== '') {
+          const li = document.createElement('li');
+          li.textContent = exp.value;
+          document.getElementById('previewExperience').appendChild(li);
+        }
+      });
+    };
+
+    document.getElementById('resumeForm').addEventListener('input', updatePreview);
+
+    const addEducation = () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Education';
+      input.className = 'education';
+      input.addEventListener('input', updatePreview);
+      document.getElementById('educationSection').appendChild(input);
+    };
+
+    const addExperience = () => {
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Experience';
+      input.className = 'experience';
+      input.addEventListener('input', updatePreview);
+      document.getElementById('experienceSection').appendChild(input);
+    };
+
+    const clearForm = () => {
+      document.getElementById('resumeForm').reset();
+      document.getElementById('educationSection').innerHTML = '<input type="text" class="education" placeholder="Education">';
+      document.getElementById('experienceSection').innerHTML = '<input type="text" class="experience" placeholder="Experience">';
+      updatePreview();
+    };
+  </script></body>
+</html>
